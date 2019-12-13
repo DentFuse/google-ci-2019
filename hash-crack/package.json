@@ -9,6 +9,9 @@
   "author": "Yashasvi Dwivedi",
   "license": "ISC",
   "dependencies": {
-    "hash.js": "^1.1.7"
+    "hash.js": "^1.1.7",
+    "inquirer": "^7.0.0",
+    "md5": "^2.2.1",
+    "signale": "^1.4.0"
   }
 }
