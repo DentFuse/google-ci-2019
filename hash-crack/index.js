@@ -1,8 +1,8 @@
 const hash = require('hash.js');
 const md5 = require('md5');
 const inquirer = require('inquirer');
+const fs = require('fs');
 const signale = require('signale');
-const siganle = signale; // Im stupid and often do this.
 
 const text = 'Awesome!';
 
@@ -26,20 +26,41 @@ async function a() {
 			message: 'Input string:'
 		}]);
 		const text = hashFunction.input;
-		if(hashFunction.ans === 'md5') return signale.info('MD5:', md5(text));
-		const computedHash = hash[hashFunction.ans]().update(text).digest('hex');
-		return siganle.info(hashFunction.ans.toUpperCase() + ':', computedHash);
+		var computedHash;
+		if(hashFunction.ans === 'md5') { 
+			computedHash = md5(text);
+		} else {
+			computedHash = hash[hashFunction.ans]().update(text).digest('hex');
+		}
+		const passList = JSON.parse(fs.readFileSync('pass.json'));
+		passList[computedHash] = hashFunction.input;
+		fs.writeFileSync('pass.json', JSON.stringify(passList));
+		return signale.info(hashFunction.ans.toUpperCase() + ':', computedHash);
 	} else {
-
+		hashFunction = await inquirer.prompt([{
+			type: 'input',
+			name: 'input',
+			message: 'Hash string:'
+		}, {
+			type: 'input',
+			name: 'pass',
+			message: 'Password list to use:',
+			default: 'pass.json'
+		}]);
+		const exists = fs.existsSync(hashFunction.pass);
+		if(!exists) return signale.error(new Error('Password list specified not present in current directory!'));
+		const passList = JSON.parse(fs.readFileSync(hashFunction.pass));
+		if(passList[hashFunction.input]) return signale.success('Found:', '"' + passList[hashFunction.input] + '"');
+		signale.warn('Hash is not present in list!');
 	}
-	// siganle.info(funcType.ans);
-	// siganle.info(text);
-	// siganle.info('MD5:', md5(text));
-	// siganle.info('SHA1:', hash.sha1().update(text).digest('hex'));
-	// siganle.info('SHA224:', hash.sha224().update(text).digest('hex'));
-	// siganle.info('SHA256:', hash.sha256().update(text).digest('hex'));
-	// siganle.info('SHA384:', hash.sha384().update(text).digest('hex'));
-	// siganle.info('SHA512:', hash.sha512().update(text).digest('hex'));
+	// signale.info(funcType.ans);
+	// signale.info(text);
+	// signale.info('MD5:', md5(text));
+	// signale.info('SHA1:', hash.sha1().update(text).digest('hex'));
+	// signale.info('SHA224:', hash.sha224().update(text).digest('hex'));
+	// signale.info('SHA256:', hash.sha256().update(text).digest('hex'));
+	// signale.info('SHA384:', hash.sha384().update(text).digest('hex'));
+	// signale.info('SHA512:', hash.sha512().update(text).digest('hex'));
 }
 
 a();
