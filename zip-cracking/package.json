@@ -1,0 +1,15 @@
+{
+  "name": "zip-cracking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yashasvi Dwivedi",
+  "license": "ISC",
+  "dependencies": {
+    "minizip-asm.js": "^1.0.10",
+    "signale": "^1.4.0"
+  }
+}
