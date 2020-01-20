@@ -20,7 +20,7 @@ def renderGame():
 	global e1, anskey
 	atomic = random.randrange(0, 119, 1)
 	anskey = elem[str(atomic)]
-	print(anskey)
+	# print(anskey)
 	tkinter.Label(m, text='Atom with atomic number ' + str(atomic)).grid(row=0)
 	tkinter.Button(m, text='Submit', width=15, command=submit).grid(row=1)
 	tkinter.Button(m, text='Exit', width=15, command=m.destroy).grid(row=1, column=1)
